@@ -1,0 +1,59 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - Projectile
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - Player
+  - Water
+  - UI
+  - Projectile
+  - Wall
+  - Ground
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: Ground
+    uniqueID: 3912988753
+    locked: 0
+  - name: Wall
+    uniqueID: 24960153
+    locked: 0
+  - name: Projectile
+    uniqueID: 2812921545
+    locked: 0
+  - name: Player
+    uniqueID: 4222887373
+    locked: 0
+  - name: WallPassBy
+    uniqueID: 1523293861
+    locked: 0
