@@ -3,10 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 using Cinemachine;
+using TMPro;
 
 public class CharController : NetworkBehaviour
 {
     [Header("Player Info")]
+    [SyncVar(hook = nameof(OnDisplayNameChanged))]
+    private string displayName;
+    
     public Animator playerAnimator;
     public Animator WeaponAnimator;
     [SyncVar] public int lookDirection = 1;
@@ -14,6 +18,8 @@ public class CharController : NetworkBehaviour
 
     [Header("Auxiliar")]
     public GameObject weapon;
+    public TMP_Text displayNameUI;
+    
 
     [Command]
     public void CmdSyncaimDirection(Vector2 cursor){
@@ -22,14 +28,13 @@ public class CharController : NetworkBehaviour
 
     public override void OnStartLocalPlayer()
     {
+        CmdChangeName(PlayerPrefs.GetString("Name"));
         FindObjectOfType<CinemachineVirtualCamera>().Follow = transform;
     }
 
     void Start() {
 
     }
-
-    
     
     // Update is called once per frame
     void Update()
@@ -62,5 +67,17 @@ public class CharController : NetworkBehaviour
                 // Debug.Log(weaponRot.eulerAngles.z);
             }
         }
+    }
+
+    
+    private void OnDisplayNameChanged(string oldValue, string newValue)
+    {
+        displayNameUI.text = newValue;
+    }
+
+    [Command]
+    private void CmdChangeName(string name)
+    {
+        displayName = name;
     }
 }
