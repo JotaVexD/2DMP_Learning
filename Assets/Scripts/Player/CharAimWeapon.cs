@@ -10,6 +10,7 @@ public class CharAimWeapon : NetworkBehaviour
     [SyncVar, HideInInspector] public Vector2 aimDirection;
 
     private bool aimingRight = true;
+    public Canvas UI;
     // Start is called before the first frame update
     private void Start()
     {
@@ -55,9 +56,14 @@ public class CharAimWeapon : NetworkBehaviour
             weaponPosition.x *= -1;
             weapon.transform.localPosition = weaponPosition;
 
-             Vector3 weaponScale =  weapon.transform.localScale;
+            Vector3 weaponScale =  weapon.transform.localScale;
             weaponScale.y *= -1;
             weapon.transform.localScale = weaponScale;
+
+            Vector3 UITransform =  UI.transform.localScale;
+            UITransform.x *= -1;
+            UI.transform.localScale = UITransform;
+
         }
     }
 }
