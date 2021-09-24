@@ -16,7 +16,7 @@ public class UserConfig : MonoBehaviour
             return _instance;
         }
     }
-    public UserData userData;
+    public CharData charData;
 
     void Awake() {
         _instance = this;

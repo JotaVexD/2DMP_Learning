@@ -9,7 +9,7 @@ public class CharController : NetworkBehaviour
 {
     [Header("Player Info")]
     [SyncVar(hook = nameof(OnDisplayNameChanged))]
-    private string displayName;
+    public string displayName;
     
     public Animator playerAnimator;
     public Animator WeaponAnimator;
@@ -28,7 +28,9 @@ public class CharController : NetworkBehaviour
 
     public override void OnStartLocalPlayer()
     {
-        CmdChangeName(PlayerPrefs.GetString("Name"));
+        displayName = UserConfig.Instance.charData.username;
+        displayNameUI.text = UserConfig.Instance.charData.username;
+        CmdChangeName(displayName);
         FindObjectOfType<CinemachineVirtualCamera>().Follow = transform;
     }
 
