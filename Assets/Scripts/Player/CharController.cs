@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Mirror;
 using Cinemachine;
 using TMPro;
@@ -8,9 +9,9 @@ using TMPro;
 public class CharController : NetworkBehaviour
 {
     [Header("Player Info")]
-    [SyncVar(hook = nameof(OnDisplayNameChanged))]
-    public string displayName;
-    
+    [SyncVar(hook = nameof(OnDisplayNameChanged))] public string displayName;
+
+    [Header("Animator")]
     public Animator playerAnimator;
     public Animator WeaponAnimator;
     [SyncVar] public int lookDirection = 1;
@@ -48,6 +49,9 @@ public class CharController : NetworkBehaviour
             if(Input.GetMouseButtonDown(0)){
                 gameObject.GetComponent<CharAttack>().Attack();
             }
+            if(Input.GetKeyDown(KeyCode.Space)){
+                gameObject.GetComponent<CharStatus>().TakeDamage(15);
+            }
 
             gameObject.GetComponent<CharMovement>().HandleMovement(aimDirection,playerAnimator);
 
@@ -82,4 +86,6 @@ public class CharController : NetworkBehaviour
     {
         displayName = name;
     }
+
+    
 }
