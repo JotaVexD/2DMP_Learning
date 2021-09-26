@@ -20,10 +20,7 @@ public class NetworkManager2DMP : NetworkManager
 
     public override void OnStartServer()
     {
-        base.OnStartServer();
-
-        
-
+        base.OnStartServer();       
         Debug.Log("Server Started");
 
     }

@@ -32,6 +32,7 @@ public class CharController : NetworkBehaviour
         displayName = UserConfig.Instance.charData.username;
         displayNameUI.text = UserConfig.Instance.charData.username;
         CmdChangeName(displayName);
+        NetworkClient.localPlayer.name = displayName;
         FindObjectOfType<CinemachineVirtualCamera>().Follow = transform;
     }
 
@@ -50,7 +51,7 @@ public class CharController : NetworkBehaviour
                 gameObject.GetComponent<CharAttack>().Attack();
             }
             if(Input.GetKeyDown(KeyCode.Space)){
-                gameObject.GetComponent<CharStatus>().TakeDamage(15);
+                gameObject.GetComponent<CharHUD>().TakeDamage(15);
             }
 
             gameObject.GetComponent<CharMovement>().HandleMovement(aimDirection,playerAnimator);
