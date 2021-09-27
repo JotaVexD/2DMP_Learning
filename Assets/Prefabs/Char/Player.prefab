@@ -195,7 +195,6 @@ GameObject:
   - component: {fileID: 4595775488854023427}
   - component: {fileID: 8845026766513951051}
   - component: {fileID: 250344798348341602}
-  - component: {fileID: 4580483434516531707}
   - component: {fileID: 4579359898961773573}
   - component: {fileID: 1476350101463355145}
   - component: {fileID: 7009617113615111959}
@@ -330,23 +329,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.10010014, y: 0.07317312}
   m_EdgeRadius: 0
---- !u!114 &4580483434516531707
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4921137729588180202}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 361ff4ebd58a68e44b8f0ac1a53fb3d3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  syncMode: 1
-  syncInterval: 0.1
-  m_CurrentHealth: 0
-  healthBar: {fileID: 0}
-  healthText: {fileID: 0}
 --- !u!114 &4579359898961773573
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -362,12 +344,19 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   displayName: 
+  healthMax: 100
+  manaMax: 100
+  staMax: 100
+  c_health: 1
+  c_mana: 0
+  c_sta: 0
   playerAnimator: {fileID: 802802376414540768}
   WeaponAnimator: {fileID: 0}
   lookDirection: 1
   aimDirection: {x: 0, y: 0}
   weapon: {fileID: 0}
   displayNameUI: {fileID: 8145152247352858129}
+  partyInviteFrom: 
 --- !u!114 &1476350101463355145
 MonoBehaviour:
   m_ObjectHideFlags: 0

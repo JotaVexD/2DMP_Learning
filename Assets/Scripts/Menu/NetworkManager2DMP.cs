@@ -8,6 +8,7 @@ public class NetworkManager2DMP : NetworkManager
 {
     public Action OnConnected;
     public Action OnDisconnected;
+    public List<GameObject> playerPrefabs;
 
     
     public override void OnClientConnect(NetworkConnection conn)
@@ -20,7 +21,7 @@ public class NetworkManager2DMP : NetworkManager
 
     public override void OnStartServer()
     {
-        base.OnStartServer();       
+        base.OnStartServer();
         Debug.Log("Server Started");
 
     }
