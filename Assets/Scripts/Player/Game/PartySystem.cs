@@ -27,6 +27,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Mirror;
 
 public static class PartySystem
 {
@@ -37,18 +38,26 @@ public static class PartySystem
     static int nextPartyId = 1;
 
     // copy party to someone
-    static void BroadcastTo(string member, Party party)
+    static void BroadcastTo(string member,Party party)
     {
-        CharController player = GameObject.Find(member).GetComponent<CharController>();
-        if (player != null)
-            player.party = party;
+        if(member != null){
+            foreach (var item in NetworkServer.spawned)
+            {
+                if(item.Value.tag == "Player"){
+                    if(member == item.Value.gameObject.GetComponent<CharController>().displayName){
+                        CharController other = item.Value.gameObject.GetComponent<CharController>();
+                        other.party = party;
+                    }
+                }
+            }
+        }
     }
 
     // copy party to all members & save in dictionary
     static void BroadcastChanges(Party party)
     {
         foreach (string member in party.members)
-            BroadcastTo(member, party);
+            BroadcastTo(member,party);
 
         parties[party.partyId] = party;
     }
@@ -120,14 +129,14 @@ public static class PartySystem
                 {
                     // broadcast and save in dict
                     BroadcastChanges(party);
-                    BroadcastTo(member, Party.Empty); // clear for kicked person
+                    BroadcastTo(member,Party.Empty); // clear for kicked person
                 }
                 // otherwise remove party. no point in having only 1 member.
                 else
                 {
                     // broadcast and remove from dict
-                    BroadcastTo(party.members[0], Party.Empty); // clear for master
-                    BroadcastTo(member, Party.Empty); // clear for kicked person
+                    BroadcastTo(member,Party.Empty); // clear for master
+                    BroadcastTo(member,Party.Empty); // clear for kicked person
                     parties.Remove(partyId);
                 }
 
@@ -136,7 +145,7 @@ public static class PartySystem
         }
     }
 
-    public static void DismissParty(int partyId, string requester)
+    public static void DismissParty(int partyId, string requester, CharController memberTo)
     {
         // party exists?
         Party party;
@@ -147,7 +156,7 @@ public static class PartySystem
             {
                 // clear party for everyone
                 foreach (string member in party.members)
-                    BroadcastTo(member, Party.Empty);
+                    BroadcastTo(member,Party.Empty);
 
                 // remove from dict
                 parties.Remove(partyId);
@@ -156,7 +165,7 @@ public static class PartySystem
         }
     }
 
-    public static void SetPartyExperienceShare(int partyId, string requester, bool value)
+    public static void SetPartyExperienceShare(int partyId, string requester, bool value, CharController memberTo)
     {
         // party exists and master?
         Party party;
@@ -170,7 +179,7 @@ public static class PartySystem
         }
     }
 
-    public static void SetPartyGoldShare(int partyId, string requester, bool value)
+    public static void SetPartyGoldShare(int partyId, string requester, bool value, CharController memberTo)
     {
         // party exists and master?
         Party party;

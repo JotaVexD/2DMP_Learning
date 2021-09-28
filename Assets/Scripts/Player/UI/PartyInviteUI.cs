@@ -7,16 +7,23 @@ public class PartyInviteUI : MonoBehaviour
     public Button inviteParty;
     public Button sendInvite;
     public TMP_InputField username;
+    private bool invSend = false;
 
     void Update(){
         CharController player = CharController.localPlayer;
-        if (player != null)
+            
+        if (player != null && !invSend)
         {
             if(username.text != ""){
-                sendInvite.onClick.AddListener(delegate {player.CmdPartyInvite(username.text); });
+                OnInviteSend(player);
             }
         }
         
+    }
+
+    void OnInviteSend(CharController player){
+        sendInvite.onClick.AddListener(delegate {player.CmdPartyInvite(username.text); });
+        return;
     }
 
     public void OpenPanel(){

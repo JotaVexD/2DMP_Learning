@@ -15,7 +15,7 @@ public struct Party
     public string master => members != null && members.Length > 0 ? members[0] : "";
 
     // statics
-    public static int Capacity = 8;
+    public static int Capacity = 6;
     public static float BonusExperiencePerMember = 0.1f;
 
     // if we create a party then always with two initial members

@@ -36,17 +36,15 @@ public class CharController : NetworkBehaviour
     [Header("Auxiliar")]
     public GameObject weapon;
     public TMP_Text displayNameUI;
+    [SyncVar, HideInInspector] public double nextRiskyActionTime = 0;
 
     [Header("Party")]
     [SyncVar, HideInInspector] public string partyInviteFrom = "";
     [SyncVar, HideInInspector] public Party party;
+    public float partyInviteWaitSeconds = 3;
 
     public static CharController localPlayer;  
-
-    [Command]
-    public void CmdSyncaimDirection(Vector2 cursor){
-        aimDirection = cursor;
-    } 
+    
 
     public override void OnStartLocalPlayer()
     {
@@ -67,12 +65,27 @@ public class CharController : NetworkBehaviour
     }
 
     void Start(){
-
+       
     }
     
 
     void OnDestroy()
     {
+
+        if (NetworkServer.active) // isServer
+        {
+            // leave party (if any)
+            // if (InParty())
+            // {
+            //     // dismiss if master, leave otherwise
+            //     if (party.master == name)
+            //         PartyDismiss();
+            //     else
+            //         PartyLeave();
+            // }
+
+        }
+
         if(isLocalPlayer){
             localPlayer = null;
         }
@@ -89,7 +102,8 @@ public class CharController : NetworkBehaviour
                 gameObject.GetComponent<CharAttack>().Attack();
             }
             if(Input.GetKeyDown(KeyCode.Space)){    
-                TakeDamage(1);
+                // TakeDamage(1);
+                Debug.Log(party.members == null);
             }
 
             gameObject.GetComponent<CharMovement>().HandleMovement(aimDirection,playerAnimator);
@@ -144,16 +158,24 @@ public class CharController : NetworkBehaviour
 
     [Command]
     public void CmdPartyInviteAccept()
-    {        
+    {
         if (!InParty() && partyInviteFrom != "")
         {
-            CharController playerInvite = GameObject.Find(partyInviteFrom).GetComponent<CharController>();
-            // is in party? then try to add
-            if (playerInvite.InParty())
-                PartySystem.AddToParty(playerInvite.party.partyId, name);
-            // otherwise try to form a new one
-            else
-                PartySystem.FormParty(playerInvite.name, name);
+            foreach (var item in NetworkServer.spawned)
+            {
+                if(item.Value.tag == "Player"){
+                    if(partyInviteFrom == item.Value.gameObject.GetComponent<CharController>().displayName){
+                        CharController other = item.Value.gameObject.GetComponent<CharController>();
+                        
+                        // is in party? then try to add
+                        if (other.InParty())
+                            PartySystem.AddToParty(other.party.partyId, displayName);
+                        
+                        else
+                            PartySystem.FormParty(other.displayName, displayName);
+                    }
+                }
+            }
         }
 
         // reset party invite in any case
@@ -169,25 +191,25 @@ public class CharController : NetworkBehaviour
     [Command]
     public void CmdPartyInvite(string otherName)
     {
-        if(GameObject.Find(otherName) != null){
-            CharController player = GameObject.Find(otherName).GetComponent<CharController>();
-            // validate: is there someone with that name, and not self?
-            if (otherName != name && player)
-            {
-                // can only send invite if no party yet or party isn't full and
-                // have invite rights and other guy isn't in party yet
-                // if ((!InParty() || !party.IsFull()) && !other.InParty())
-                // {
-                    // send a invite
-                    player.partyInviteFrom = name;
+        foreach (var item in NetworkServer.spawned)
+        {
+            if(item.Value.tag == "Player"){
+                if(otherName == item.Value.gameObject.GetComponent<CharController>().displayName){
+                    CharController other = item.Value.gameObject.GetComponent<CharController>();
 
-                    print(name + " invited " + player.name + " to party");
-                // }
-            }
+                    if (otherName != displayName  && NetworkTime.time >= nextRiskyActionTime){
+
+                        if ((!InParty() || !party.IsFull()) && !other.InParty())
+                        {
+                            other.partyInviteFrom = displayName;
+
+                            print(displayName + " invited " + other.displayName + " to party");
+                        }
+                    }
+
+                }
+            }            
         }
-
+        nextRiskyActionTime = NetworkTime.time + partyInviteWaitSeconds;
     }
-
-
-    
 }
