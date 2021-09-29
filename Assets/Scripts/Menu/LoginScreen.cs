@@ -56,14 +56,6 @@ public class LoginScreen : MonoBehaviour
         // PlayerPrefs.SetString("Name", username.text);
         HUD.gameObject.SetActive(false);
     }
-
-    public void DEBUG_CLIENTANDSERVER()
-    {
-        UserConfig.Instance.charData.username = clientData.username;
-        networkManager.StartHost();
-        // PlayerPrefs.SetString("Name", username.text);
-        HUD.gameObject.SetActive(false);
-    }
 }
 
 

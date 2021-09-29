@@ -4,11 +4,19 @@ using UnityEngine;
 using Mirror;
 using System;
 
+public enum NetworkState {Offline, Handshake, Lobby, World}
+
+[RequireComponent(typeof(Database))]
 public class NetworkManager2DMP : NetworkManager
 {
+    public NetworkState state = NetworkState.Offline;
     public Action OnConnected;
     public Action OnDisconnected;
     public List<GameObject> playerPrefabs;
+
+
+    public Dictionary<NetworkConnection, string> lobby = new Dictionary<NetworkConnection, string>();
+    
 
     
     public override void OnClientConnect(NetworkConnection conn)
@@ -21,6 +29,8 @@ public class NetworkManager2DMP : NetworkManager
 
     public override void OnStartServer()
     {
+        Database.singleton.Connect();
+
         base.OnStartServer();
         Debug.Log("Server Started");
 

@@ -7641,6 +7641,7 @@ GameObject:
   - component: {fileID: 1519031234}
   - component: {fileID: 1519031232}
   - component: {fileID: 1519031231}
+  - component: {fileID: 1519031233}
   m_Layer: 0
   m_Name: NetworkManager
   m_TagString: Untagged
@@ -7691,7 +7692,7 @@ MonoBehaviour:
   serverTickRate: 60
   offlineScene: 
   onlineScene: 
-  transport: {fileID: 0}
+  transport: {fileID: 1519031231}
   networkAddress: localhost
   maxConnections: 100
   disconnectInactiveConnections: 0
@@ -7703,6 +7704,19 @@ MonoBehaviour:
   spawnPrefabs:
   - {fileID: 4391206699080516605, guid: 2e4c0f8cb78e7b147814fde448621950, type: 3}
   playerPrefabs: []
+--- !u!114 &1519031233
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1519031230}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee123a4366c31a444bd13c7ab644586f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  databaseFile: Database.sqlite
 --- !u!4 &1519031234
 Transform:
   m_ObjectHideFlags: 0
