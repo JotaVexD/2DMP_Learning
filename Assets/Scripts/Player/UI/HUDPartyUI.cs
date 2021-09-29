@@ -2,6 +2,7 @@ using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Mirror;
 
 public partial class HUDPartyUI : MonoBehaviour
 {
@@ -39,13 +40,16 @@ public partial class HUDPartyUI : MonoBehaviour
                 // doesn't have to send all that data around. people will only
                 // see health of party members that are near them, which is the
                 // only time that it's important anyway.
-                if (GameObject.Find(memberName).GetComponent<CharController>())
+                foreach (var item in NetworkServer.spawned)
                 {
-                    CharController member = GameObject.Find(memberName).GetComponent<CharController>();
-                    slot.healthSlider.value = member.c_health;
-                    slot.healthStatus.text = member.c_health + " / " + member.healthMax;
+                    if(item.Value.tag == "Player"){
+                        if(memberName == item.Value.gameObject.GetComponent<CharController>().displayName){
+                            CharController member = item.Value.gameObject.GetComponent<CharController>();
+                            slot.healthSlider.value = member.c_health;
+                            slot.healthStatus.text = member.c_health + " / " + member.healthMax;
+                        }
+                    }
                 }
-
             }
         }
         else panel.SetActive(false);

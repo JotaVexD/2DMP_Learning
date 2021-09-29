@@ -124,9 +124,11 @@ public static class PartySystem
                 // remove from list
                 party.members = party.members.Where(name => name != member).ToArray();
 
+                Debug.Log(party.members.Length);
                 // still > 1 people?
                 if (party.members.Length > 1)
                 {
+                    Debug.Log("Test1");
                     // broadcast and save in dict
                     BroadcastChanges(party);
                     BroadcastTo(member,Party.Empty); // clear for kicked person
@@ -134,6 +136,7 @@ public static class PartySystem
                 // otherwise remove party. no point in having only 1 member.
                 else
                 {
+                    Debug.Log("Test2");
                     // broadcast and remove from dict
                     BroadcastTo(member,Party.Empty); // clear for master
                     BroadcastTo(member,Party.Empty); // clear for kicked person
@@ -145,7 +148,7 @@ public static class PartySystem
         }
     }
 
-    public static void DismissParty(int partyId, string requester, CharController memberTo)
+    public static void DismissParty(int partyId, string requester)
     {
         // party exists?
         Party party;

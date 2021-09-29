@@ -72,18 +72,17 @@ public class CharController : NetworkBehaviour
     void OnDestroy()
     {
 
-        if (NetworkServer.active) // isServer
+         if (NetworkServer.active) // isServer
         {
             // leave party (if any)
-            // if (InParty())
-            // {
-            //     // dismiss if master, leave otherwise
-            //     if (party.master == name)
-            //         PartyDismiss();
-            //     else
-            //         PartyLeave();
-            // }
-
+            if (InParty())
+            {
+                // dismiss if master, leave otherwise
+                if (party.master == displayName)
+                    PartyDismiss();
+                else
+                    PartyLeave();
+            }
         }
 
         if(isLocalPlayer){
@@ -212,4 +211,22 @@ public class CharController : NetworkBehaviour
         }
         nextRiskyActionTime = NetworkTime.time + partyInviteWaitSeconds;
     }
+
+    // version without cmd because we need to call it from the server too
+    public void PartyLeave()
+    {
+        // try to leave. party system will do all the validation.
+        PartySystem.LeaveParty(party.partyId, displayName);
+    }
+    [Command]
+    public void CmdPartyLeave() { PartyLeave(); }
+
+    // version without cmd because we need to call it from the server too
+    public void PartyDismiss()
+    {
+        // try to dismiss. party system will do all the validation.
+        PartySystem.DismissParty(party.partyId, displayName);
+    }
+    [Command]
+    public void CmdPartyDismiss() { PartyDismiss(); }
 }
